@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Son Eun-sol</title>
+  <title>AI바이브코딩웹</title>
   <style>
     * {
       margin: 0;
@@ -13,65 +13,145 @@
 
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      background: #050510;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      overflow: hidden;
+      position: relative;
     }
 
+    /* 별빛 */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--d) ease-in-out infinite;
+      opacity: 0;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50%       { opacity: var(--o); transform: scale(1.2); }
+    }
+
+    /* 오로라 */
+    .aurora {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .aurora-band {
+      position: absolute;
+      width: 160%;
+      height: 340px;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: drift var(--d) ease-in-out infinite alternate;
+    }
+
+    .aurora-band:nth-child(1) {
+      background: linear-gradient(90deg, #00c8ff, #7b2ff7, #00c8ff);
+      top: -80px; left: -30%;
+      --d: 9s;
+    }
+
+    .aurora-band:nth-child(2) {
+      background: linear-gradient(90deg, #ff6fdb, #00e5cc, #ff6fdb);
+      top: 60px; left: -10%;
+      --d: 13s;
+      opacity: 0.25;
+    }
+
+    .aurora-band:nth-child(3) {
+      background: linear-gradient(90deg, #3af77b, #7b2ff7, #3af77b);
+      top: 120px; left: -20%;
+      --d: 17s;
+      opacity: 0.2;
+    }
+
+    @keyframes drift {
+      from { transform: translateX(0) scaleY(1); }
+      to   { transform: translateX(6%) scaleY(1.15); }
+    }
+
+    /* 카드 */
     .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 60px 48px;
-      max-width: 560px;
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      padding: 64px 52px;
+      max-width: 580px;
       width: 100%;
       text-align: center;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 60px rgba(123, 47, 247, 0.2), 0 0 120px rgba(0, 200, 255, 0.1);
     }
 
-    .avatar {
-      width: 100px;
-      height: 100px;
+    .glow-ring {
+      width: 108px;
+      height: 108px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #7b2ff7, #00c8ff);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 28px;
-      font-size: 2.4rem;
+      margin: 0 auto 32px;
+      font-size: 2.6rem;
+      box-shadow: 0 0 30px rgba(123, 47, 247, 0.6), 0 0 60px rgba(0, 200, 255, 0.3);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(123,47,247,0.6), 0 0 60px rgba(0,200,255,0.3); }
+      50%       { box-shadow: 0 0 50px rgba(123,47,247,0.9), 0 0 100px rgba(0,200,255,0.5); }
     }
 
     .name {
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 2.2rem;
+      font-weight: 800;
       color: #ffffff;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       letter-spacing: -0.5px;
+      text-shadow: 0 0 20px rgba(123, 47, 247, 0.6);
     }
 
     .role {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #a78bfa;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
       font-weight: 500;
+      letter-spacing: 0.5px;
     }
 
     .divider {
-      width: 48px;
+      width: 56px;
       height: 3px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
+      background: linear-gradient(90deg, #7b2ff7, #00c8ff);
       border-radius: 2px;
       margin: 0 auto 32px;
     }
 
     .description {
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.7);
-      line-height: 1.8;
-      margin-bottom: 40px;
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.85;
+      margin-bottom: 44px;
     }
 
     .tags {
@@ -82,42 +162,73 @@
     }
 
     .tag {
-      background: rgba(102, 126, 234, 0.15);
-      border: 1px solid rgba(102, 126, 234, 0.4);
-      color: #a78bfa;
-      padding: 6px 16px;
+      background: rgba(123, 47, 247, 0.15);
+      border: 1px solid rgba(123, 47, 247, 0.45);
+      color: #c4b5fd;
+      padding: 7px 18px;
       border-radius: 999px;
       font-size: 0.875rem;
-      font-weight: 500;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .tag:hover {
+      background: rgba(123, 47, 247, 0.35);
     }
 
     @media (max-width: 480px) {
-      .card {
-        padding: 40px 28px;
-      }
-
-      .name {
-        font-size: 1.6rem;
-      }
+      .card { padding: 44px 28px; }
+      .name { font-size: 1.75rem; }
     }
   </style>
 </head>
 <body>
+
+  <!-- 별빛 -->
+  <div class="stars" id="stars"></div>
+
+  <!-- 오로라 -->
+  <div class="aurora">
+    <div class="aurora-band"></div>
+    <div class="aurora-band"></div>
+    <div class="aurora-band"></div>
+  </div>
+
+  <!-- 카드 -->
   <div class="card">
-    <div class="avatar">👩‍💻</div>
-    <h1 class="name">Son Eun-sol</h1>
-    <p class="role">AI 바이브코딩 웹 강사</p>
+    <div class="glow-ring">✨</div>
+    <h1 class="name">AI바이브코딩웹</h1>
+    <p class="role">Son Eun-sol · AI 바이브코딩 웹 강사</p>
     <div class="divider"></div>
     <p class="description">
-      AI를 활용한 바이브코딩으로<br />
-      누구나 웹을 만들 수 있도록 가르칩니다.
+      AI바이브코딩웹을 사용하여<br />
+      손쉽게 웹을 만들 수 있습니다.
     </p>
     <div class="tags">
-      <span class="tag">AI 코딩</span>
-      <span class="tag">웹 개발</span>
+      <span class="tag">AI코딩</span>
+      <span class="tag">웹개발</span>
       <span class="tag">React</span>
-      <span class="tag">강의</span>
+      <span class="tag">WebPortfolio</span>
     </div>
   </div>
+
+  <script>
+    // 별빛 생성
+    const container = document.getElementById('stars');
+    for (let i = 0; i < 160; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        width:${size}px; height:${size}px;
+        top:${Math.random()*100}%;
+        left:${Math.random()*100}%;
+        --d:${(Math.random()*4+2).toFixed(1)}s;
+        --o:${(Math.random()*0.7+0.3).toFixed(2)};
+        animation-delay:${(Math.random()*5).toFixed(1)}s;
+      `;
+      container.appendChild(s);
+    }
+  </script>
 </body>
 </html>
