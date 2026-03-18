@@ -37,17 +37,17 @@ npm run dev
 ### 핵심 패키지
 | 패키지 | 버전 | 용도 |
 |--------|------|------|
-| react | ^18.x | UI 라이브러리 |
-| react-dom | ^18.x | DOM 렌더링 |
-| react-router-dom | ^6.x | 라우팅 |
+| react | ^19.x | UI 라이브러리 |
+| react-dom | ^19.x | DOM 렌더링 |
+| react-router-dom | ^7.x | 라우팅 |
 
 ### MUI 패키지
 | 패키지 | 버전 | 용도 |
 |--------|------|------|
-| @mui/material | ^5.x | MUI 컴포넌트 |
+| @mui/material | ^7.x | MUI 컴포넌트 |
 | @emotion/react | ^11.x | CSS-in-JS |
 | @emotion/styled | ^11.x | 스타일드 컴포넌트 |
-| @mui/icons-material | ^5.x | MUI 아이콘 |
+| @mui/icons-material | ^7.x | MUI 아이콘 |
 | @fontsource/roboto | ^5.x | Roboto 폰트 |
 
 ## 기본 파일 구조
