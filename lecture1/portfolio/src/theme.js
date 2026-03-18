@@ -6,27 +6,28 @@ import '@fontsource/roboto/700.css';
 
 const theme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
-      main: '#1976d2',
-      light: '#42a5f5',
-      dark: '#1565c0',
+      main: '#7b2ff7',
+      light: '#c084fc',
+      dark: '#5a1fb5',
     },
     secondary: {
-      main: '#9c27b0',
-      light: '#ba68c8',
-      dark: '#7b1fa2',
+      main: '#00c8ff',
+      light: '#67e8ff',
+      dark: '#0097cc',
     },
-    error: { main: '#d32f2f' },
-    warning: { main: '#ed6c02' },
-    info: { main: '#0288d1' },
-    success: { main: '#2e7d32' },
+    error: { main: '#ff3cac' },
+    warning: { main: '#ffd93d' },
+    info: { main: '#4d96ff' },
+    success: { main: '#00ff87' },
     background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
+      default: '#04040f',
+      paper: 'rgba(28, 16, 56, 0.80)',
     },
     text: {
-      primary: 'rgba(0,0,0,0.87)',
-      secondary: 'rgba(0,0,0,0.6)',
+      primary: 'rgba(255,255,255,0.95)',
+      secondary: 'rgba(220, 215, 255, 0.75)',
     },
   },
   typography: {
@@ -39,6 +40,99 @@ const theme = createTheme({
     caption: { fontSize: '0.75rem', fontWeight: 400 },
   },
   spacing: 8,
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: 'rgba(4, 4, 15, 0.75)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(160, 120, 255, 0.18)',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          background: 'linear-gradient(160deg, rgba(28,16,56,0.75) 0%, rgba(10,10,32,0.70) 60%, rgba(8,22,52,0.75) 100%)',
+          border: '1px solid rgba(160, 120, 255, 0.18)',
+          backdropFilter: 'blur(24px)',
+          boxShadow: '0 8px 32px rgba(80, 30, 180, 0.22), 0 4px 16px rgba(0,0,0,0.45)',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-4px)',
+            boxShadow: '0 16px 48px rgba(80, 30, 180, 0.32), 0 8px 24px rgba(0,0,0,0.5)',
+          },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          background: 'rgba(255,255,255,0.06)',
+          border: '1px solid rgba(255,255,255,0.14)',
+          color: 'rgba(210, 200, 240, 0.9)',
+          '&:hover': {
+            background: 'rgba(255,255,255,0.11)',
+          },
+        },
+        colorPrimary: {
+          background: 'rgba(123, 47, 247, 0.2)',
+          border: '1px solid rgba(123, 47, 247, 0.4)',
+          color: '#c084fc',
+        },
+        colorSecondary: {
+          background: 'rgba(0, 200, 255, 0.15)',
+          border: '1px solid rgba(0, 200, 255, 0.35)',
+          color: '#67e8ff',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        containedPrimary: {
+          background: 'linear-gradient(135deg, #7b2ff7, #00c8ff)',
+          boxShadow: '0 4px 20px rgba(123, 47, 247, 0.4)',
+          '&:hover': {
+            background: 'linear-gradient(135deg, #9a4fff, #22d4ff)',
+            boxShadow: '0 6px 28px rgba(123, 47, 247, 0.55)',
+          },
+        },
+        outlinedPrimary: {
+          borderColor: 'rgba(123, 47, 247, 0.5)',
+          color: '#c084fc',
+          '&:hover': {
+            borderColor: '#7b2ff7',
+            background: 'rgba(123, 47, 247, 0.1)',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'rgba(160, 120, 255, 0.3)',
+            },
+            '&:hover fieldset': {
+              borderColor: 'rgba(160, 120, 255, 0.6)',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#7b2ff7',
+            },
+          },
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: 'rgba(160, 120, 255, 0.2)',
+        },
+      },
+    },
+  },
 });
 
 export default theme;

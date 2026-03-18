@@ -9,7 +9,7 @@ import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/my_ai_web">
+    <BrowserRouter basename="/my_ai_web_test">
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />

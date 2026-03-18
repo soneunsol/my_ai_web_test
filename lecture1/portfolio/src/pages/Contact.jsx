@@ -11,12 +11,21 @@ import {
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import SendIcon from '@mui/icons-material/Send';
 
 const SNS_LINKS = [
-  { icon: <GitHubIcon />, label: 'GitHub', value: 'github.com/your-username' },
-  { icon: <LinkedInIcon color="info" />, label: 'LinkedIn', value: 'linkedin.com/in/your-profile' },
-  { icon: <EmailIcon color="error" />, label: 'Email', value: 'your-email@example.com' },
+  {
+    icon: <GitHubIcon sx={{ color: '#c084fc' }} />,
+    label: 'GitHub',
+    value: 'github.com/soneunsol',
+    href: 'https://github.com/soneunsol',
+  },
+  {
+    icon: <EmailIcon sx={{ color: '#ff3cac' }} />,
+    label: 'Email',
+    value: 'your-email@example.com',
+    href: 'mailto:your-email@example.com',
+  },
 ];
 
 const Contact = () => {
@@ -36,7 +45,6 @@ const Contact = () => {
     <Box
       sx={{
         minHeight: 'calc(100vh - 64px)',
-        bgcolor: 'background.default',
         display: 'flex',
         justifyContent: 'center',
         px: 2,
@@ -44,33 +52,77 @@ const Contact = () => {
       }}
     >
       <Box sx={{ maxWidth: 720, width: '100%' }}>
-        {/* Header */}
-        <Box sx={{ textAlign: 'center', mb: 5 }}>
-          <Typography variant="h1" sx={{ color: 'primary.main', mb: 1 }}>
+
+        {/* 헤더 */}
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography
+            variant="caption"
+            sx={{ letterSpacing: 4, color: '#00c8ff', display: 'block', mb: 1, textTransform: 'uppercase' }}
+          >
+            Get In Touch
+          </Typography>
+          <Typography
+            variant="h1"
+            sx={{
+              color: '#fff',
+              fontWeight: 700,
+              textShadow: '0 0 20px rgba(123,47,247,0.5)',
+              mb: 2,
+            }}
+          >
             Contact
           </Typography>
-          <Divider sx={{ borderColor: 'primary.light', borderWidth: 2, width: 60, mx: 'auto', mb: 2 }} />
-          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-            Contact 페이지입니다. SNS 링크와 간단한 메시지 폼이 들어갈 예정입니다.
+          <Box
+            sx={{
+              width: 56,
+              height: 2,
+              background: 'linear-gradient(90deg, #7b2ff7, #00c8ff)',
+              borderRadius: 1,
+              mx: 'auto',
+              mb: 2,
+            }}
+          />
+          <Typography variant="body1" sx={{ color: 'rgba(220,215,255,0.7)' }}>
+            프로젝트 협업이나 문의사항이 있으시면 연락주세요.
           </Typography>
         </Box>
 
-        {/* SNS Links */}
-        <Card elevation={2} sx={{ mb: 4 }}>
+        {/* SNS 링크 */}
+        <Card sx={{ mb: 3 }}>
           <CardContent sx={{ p: 4 }}>
-            <Typography variant="h3" sx={{ mb: 2 }}>
-              SNS / 연락처
+            <Typography variant="h3" sx={{ color: '#fff', fontWeight: 600, mb: 2 }}>
+              연락처
             </Typography>
             <Divider sx={{ mb: 3 }} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {SNS_LINKS.map(({ icon, label, value }) => (
-                <Box key={label} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+              {SNS_LINKS.map(({ icon, label, value, href }) => (
+                <Box
+                  key={label}
+                  component="a"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    textDecoration: 'none',
+                    p: 1.5,
+                    borderRadius: 2,
+                    border: '1px solid rgba(160,120,255,0.15)',
+                    transition: 'background 0.2s, border-color 0.2s',
+                    '&:hover': {
+                      background: 'rgba(123,47,247,0.1)',
+                      borderColor: 'rgba(160,120,255,0.35)',
+                    },
+                  }}
+                >
                   {icon}
                   <Box>
-                    <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1 }}>
+                    <Typography variant="body2" sx={{ color: 'rgba(220,215,255,0.55)', lineHeight: 1 }}>
                       {label}
                     </Typography>
-                    <Typography variant="body1" sx={{ color: 'text.primary' }}>
+                    <Typography variant="body1" sx={{ color: 'rgba(220,215,255,0.9)', mt: 0.25 }}>
                       {value}
                     </Typography>
                   </Box>
@@ -80,21 +132,34 @@ const Contact = () => {
           </CardContent>
         </Card>
 
-        {/* Message Form */}
-        <Card elevation={2}>
+        {/* 메시지 폼 */}
+        <Card>
           <CardContent sx={{ p: 4 }}>
-            <Typography variant="h3" sx={{ mb: 2 }}>
+            <Typography variant="h3" sx={{ color: '#fff', fontWeight: 600, mb: 2 }}>
               메시지 보내기
             </Typography>
             <Divider sx={{ mb: 3 }} />
 
             {submitted && (
-              <Alert severity="success" sx={{ mb: 3 }} onClose={() => setSubmitted(false)}>
+              <Alert
+                severity="success"
+                sx={{
+                  mb: 3,
+                  background: 'rgba(0, 255, 135, 0.1)',
+                  border: '1px solid rgba(0, 255, 135, 0.3)',
+                  color: '#00ff87',
+                }}
+                onClose={() => setSubmitted(false)}
+              >
                 메시지가 전송되었습니다. 감사합니다!
               </Alert>
             )}
 
-            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}
+            >
               <TextField
                 label="이름"
                 name="name"
@@ -125,12 +190,19 @@ const Contact = () => {
                 multiline
                 rows={4}
               />
-              <Button type="submit" variant="contained" size="large" sx={{ alignSelf: 'flex-end', px: 4 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                endIcon={<SendIcon />}
+                sx={{ alignSelf: 'flex-end', px: 4 }}
+              >
                 전송
               </Button>
             </Box>
           </CardContent>
         </Card>
+
       </Box>
     </Box>
   );
