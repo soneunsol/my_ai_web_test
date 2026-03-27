@@ -90,11 +90,11 @@ const CommentModal = ({ open, onClose, postId, onCommentAdded }) => {
           comments.map((comment) => (
             <Box key={comment.id} sx={{ display: 'flex', gap: 1.5, mb: 2 }}>
               <Avatar sx={{ width: 32, height: 32, bgcolor: '#FF6B35', fontSize: '0.8rem' }}>
-                {comment.users?.nickname?.[0]?.toUpperCase()}
+                {comment.sns_users?.nickname?.[0]?.toUpperCase()}
               </Avatar>
               <Box sx={{ flex: 1 }}>
                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'baseline' }}>
-                  <Typography variant="body2" fontWeight={600}>{comment.users?.nickname}</Typography>
+                  <Typography variant="body2" fontWeight={600}>{comment.sns_users?.nickname}</Typography>
                   <Typography variant="caption" color="text.secondary">{formatTime(comment.created_at)}</Typography>
                 </Box>
                 <Typography variant="body2">{comment.content}</Typography>

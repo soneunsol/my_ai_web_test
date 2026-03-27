@@ -19,7 +19,7 @@ const getRandomProfileImage = () => {
 export const signUp = async ({ username, password, nickname }) => {
   // 중복 확인
   const { data: existing } = await supabase
-    .from('users')
+    .from('sns_users')
     .select('id')
     .or(`username.eq.${username},nickname.eq.${nickname}`)
     .maybeSingle();
@@ -30,7 +30,7 @@ export const signUp = async ({ username, password, nickname }) => {
   const profileImageUrl = getRandomProfileImage();
 
   const { data, error } = await supabase
-    .from('users')
+    .from('sns_users')
     .insert({ username, password_hash: passwordHash, nickname, profile_image_url: profileImageUrl })
     .select()
     .single();
@@ -43,7 +43,7 @@ export const signIn = async ({ username, password }) => {
   const passwordHash = simpleHash(password);
 
   const { data, error } = await supabase
-    .from('users')
+    .from('sns_users')
     .select('*')
     .eq('username', username)
     .eq('password_hash', passwordHash)

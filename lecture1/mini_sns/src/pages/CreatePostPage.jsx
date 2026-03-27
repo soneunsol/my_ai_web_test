@@ -15,6 +15,7 @@ const CreatePostPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [imageUrl, setImageUrl] = useState('');
+  const [imageLoading, setImageLoading] = useState(false);
   const [caption, setCaption] = useState('');
   const [hashtagInput, setHashtagInput] = useState('');
   const [hashtags, setHashtags] = useState([]);
@@ -22,12 +23,19 @@ const CreatePostPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const loadRandomImage = async () => {
+    setImageLoading(true);
+    const url = await getRandomFoodImage();
+    setImageUrl(url);
+    setImageLoading(false);
+  };
+
   useEffect(() => {
-    setImageUrl(getRandomFoodImage());
+    loadRandomImage();
   }, []);
 
   const handleRefreshImage = () => {
-    setImageUrl(getRandomFoodImage());
+    loadRandomImage();
   };
 
   const handleAddHashtag = (e) => {
@@ -102,16 +110,33 @@ const CreatePostPage = () => {
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
         {/* 이미지 미리보기 */}
-        <Box sx={{ position: 'relative', mb: 2, borderRadius: 2, overflow: 'hidden' }}>
-          <Box
-            component="img"
-            src={imageUrl}
-            alt="음식"
-            sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-            onError={(e) => { e.target.src = `https://picsum.photos/400/400?random=${Math.random()}`; }}
-          />
+        <Box
+          sx={{
+            position: 'relative',
+            mb: 2,
+            borderRadius: 2,
+            overflow: 'hidden',
+            aspectRatio: '1/1',
+            bgcolor: '#f0f0f0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {imageLoading ? (
+            <CircularProgress sx={{ color: '#FF6B35' }} />
+          ) : (
+            <Box
+              component="img"
+              src={imageUrl}
+              alt="음식"
+              sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              onError={(e) => { e.target.src = `https://picsum.photos/400/400?random=${Date.now()}`; }}
+            />
+          )}
           <IconButton
             onClick={handleRefreshImage}
+            disabled={imageLoading}
             sx={{
               position: 'absolute',
               bottom: 8,
@@ -119,6 +144,7 @@ const CreatePostPage = () => {
               bgcolor: 'rgba(0,0,0,0.5)',
               color: 'white',
               '&:hover': { bgcolor: 'rgba(0,0,0,0.7)' },
+              '&:disabled': { color: 'rgba(255,255,255,0.4)' },
             }}
           >
             <RefreshIcon />
