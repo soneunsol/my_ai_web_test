@@ -59,6 +59,15 @@ const PostListPage = () => {
           <Card key={post.id} elevation={2}>
             <CardActionArea onClick={() => navigate(`/posts/${post.id}`)}>
               <Box sx={{ display: 'flex' }}>
+                {post.image_url && (
+                  <Box sx={{ flexShrink: 0, width: 120, alignSelf: 'stretch' }}>
+                    <img
+                      src={post.image_url}
+                      alt={post.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px 0 0 4px', display: 'block' }}
+                    />
+                  </Box>
+                )}
                 <CardContent sx={{ flex: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 500 }}>
                     {post.title}
@@ -97,15 +106,6 @@ const PostListPage = () => {
                     </Box>
                   )}
                 </CardContent>
-                {post.image_url && (
-                  <Box sx={{ flexShrink: 0, width: 120, alignSelf: 'stretch' }}>
-                    <img
-                      src={post.image_url}
-                      alt={post.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '0 4px 4px 0', display: 'block' }}
-                    />
-                  </Box>
-                )}
               </Box>
             </CardActionArea>
           </Card>
