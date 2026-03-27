@@ -1,0 +1,63 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+
+const NavBar = () => {
+  const navigate = useNavigate();
+
+  return (
+    <AppBar
+      position="fixed"
+      elevation={0}
+      sx={{
+        background: 'rgba(255,255,255,0.95)',
+        backdropFilter: 'blur(10px)',
+        borderBottom: '1px solid rgba(255,107,53,0.15)',
+        maxWidth: 480,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100%',
+      }}
+    >
+      <Toolbar sx={{ justifyContent: 'space-between', minHeight: 56 }}>
+        {/* 로고 */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box
+            sx={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #FF6B35, #FFB347)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <RestaurantMenuIcon sx={{ fontSize: 18, color: 'white' }} />
+          </Box>
+          <Typography
+            sx={{
+              fontWeight: 700,
+              fontSize: '1.2rem',
+              background: 'linear-gradient(135deg, #FF6B35, #FFB347)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              letterSpacing: '-0.5px',
+            }}
+          >
+            맛스타그램
+          </Typography>
+        </Box>
+
+        {/* 알림 아이콘 */}
+        <IconButton onClick={() => navigate('/notifications')} sx={{ color: '#FF6B35' }}>
+          <NotificationsNoneIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default NavBar;

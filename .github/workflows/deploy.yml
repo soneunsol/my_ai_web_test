@@ -45,12 +45,25 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: npm run build
 
+      - name: mini_sns 의존성 설치
+        working-directory: lecture1/mini_sns
+        run: npm install
+
+      - name: mini_sns 빌드
+        working-directory: lecture1/mini_sns
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: npm run build
+
       - name: 배포 디렉토리 합치기
         run: |
           mkdir -p combined-dist
           cp -r lecture1/portfolio/dist/. combined-dist/
           mkdir -p combined-dist/my-community
           cp -r lecture1/my-community/dist/. combined-dist/my-community/
+          mkdir -p combined-dist/mini_sns
+          cp -r lecture1/mini_sns/dist/. combined-dist/mini_sns/
 
       - name: Pages 설정
         uses: actions/configure-pages@v4
