@@ -23,7 +23,7 @@ const NavBar = () => {
     >
       <Toolbar sx={{ justifyContent: 'space-between', minHeight: 56 }}>
         {/* 로고 */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+        <Box onClick={() => navigate('/')} sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}>
           <Box
             sx={{
               width: 32,
