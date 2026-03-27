@@ -28,10 +28,10 @@ export const fetchPosts = async () => {
     .from('sns_posts')
     .select(`
       *,
-      sns_users (id, nickname, profile_image_url),
+      users (id, nickname, profile_image_url),
       sns_comments (
         id, content, created_at,
-        sns_users (id, nickname)
+        users (id, nickname)
       )
     `)
     .order('created_at', { ascending: false });
@@ -67,7 +67,7 @@ export const addComment = async ({ postId, userId, content }) => {
   const { data, error } = await supabase
     .from('sns_comments')
     .insert({ post_id: postId, user_id: userId, content })
-    .select(`*, sns_users(id, nickname)`)
+    .select(`*, users(id, nickname)`)
     .single();
 
   if (error) throw error;
@@ -77,7 +77,7 @@ export const addComment = async ({ postId, userId, content }) => {
 export const fetchComments = async (postId) => {
   const { data, error } = await supabase
     .from('sns_comments')
-    .select(`*, sns_users(id, nickname)`)
+    .select(`*, users(id, nickname)`)
     .eq('post_id', postId)
     .order('created_at', { ascending: true });
 

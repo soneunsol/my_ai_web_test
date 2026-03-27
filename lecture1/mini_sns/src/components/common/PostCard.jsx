@@ -25,7 +25,7 @@ const PostCard = ({ post, likedPostIds = [], onLikeChange }) => {
   const [liked, setLiked] = useState(likedPostIds.includes(post.id));
   const [likeCount, setLikeCount] = useState(post.like_count || 0);
   const [commentOpen, setCommentOpen] = useState(false);
-  const comments = post.sns_comments || [];
+  const comments = post.sns_comments || post.comments || [];
   const [commentCount, setCommentCount] = useState(comments.length);
 
   const recentComments = comments.slice(-2);
@@ -62,11 +62,11 @@ const PostCard = ({ post, likedPostIds = [], onLikeChange }) => {
       {/* 상단: 프로필 + 닉네임 + 위치 */}
       <Box sx={{ display: 'flex', alignItems: 'center', px: 2, py: 1.5, gap: 1 }}>
         <Avatar
-          src={post.sns_users?.profile_image_url}
+          src={post.users?.profile_image_url}
           sx={{ width: 40, height: 40, border: '2px solid #FF6B35' }}
         />
         <Box sx={{ flex: 1 }}>
-          <Typography variant="body2" fontWeight={700}>{post.sns_users?.nickname}</Typography>
+          <Typography variant="body2" fontWeight={700}>{post.users?.nickname}</Typography>
           {post.location && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
               <LocationOnIcon sx={{ fontSize: 12, color: '#FF6B35' }} />
@@ -89,7 +89,7 @@ const PostCard = ({ post, likedPostIds = [], onLikeChange }) => {
       <Box sx={{ px: 2, pt: 1 }}>
         {post.caption && (
           <Typography variant="body2" sx={{ mb: 0.5 }}>
-            <strong>{post.sns_users?.nickname}</strong>{' '}{post.caption}
+            <strong>{post.users?.nickname}</strong>{' '}{post.caption}
           </Typography>
         )}
         {hashtags.length > 0 && (
@@ -122,7 +122,7 @@ const PostCard = ({ post, likedPostIds = [], onLikeChange }) => {
           <Box sx={{ px: 1 }}>
             {recentComments.map((c) => (
               <Typography key={c.id} variant="caption" display="block" sx={{ color: '#333' }}>
-                <strong>{c.sns_users?.nickname}</strong> {c.content}
+                <strong>{c.users?.nickname}</strong> {c.content}
               </Typography>
             ))}
           </Box>
