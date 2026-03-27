@@ -26,13 +26,31 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 의존성 설치
+      - name: 포트폴리오 의존성 설치
         working-directory: lecture1/portfolio
         run: npm install
 
-      - name: 빌드
+      - name: 포트폴리오 빌드
         working-directory: lecture1/portfolio
         run: npm run build
+
+      - name: my-community 의존성 설치
+        working-directory: lecture1/my-community
+        run: npm install
+
+      - name: my-community 빌드
+        working-directory: lecture1/my-community
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: npm run build
+
+      - name: 배포 디렉토리 합치기
+        run: |
+          mkdir -p combined-dist
+          cp -r lecture1/portfolio/dist/. combined-dist/
+          mkdir -p combined-dist/my-community
+          cp -r lecture1/my-community/dist/. combined-dist/my-community/
 
       - name: Pages 설정
         uses: actions/configure-pages@v4
@@ -40,7 +58,7 @@ jobs:
       - name: 아티팩트 업로드
         uses: actions/upload-pages-artifact@v3
         with:
-          path: lecture1/portfolio/dist
+          path: combined-dist
 
   deploy:
     environment:
