@@ -1,10 +1,21 @@
 import { useState } from 'react';
 import {
   Box, Card, CardContent, Typography,
-  TextField, Button, Alert, Link,
+  TextField, Button, Alert, Link, Chip, Stack,
 } from '@mui/material';
+import {
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { signUp } from '../services/authService';
+import { signUp, checkUsernameAvailable } from '../services/authService';
+
+const PASSWORD_RULES = [
+  { label: '8자 이상', test: (pw) => pw.length >= 8 },
+  { label: '영문 포함', test: (pw) => /[a-zA-Z]/.test(pw) },
+  { label: '숫자 포함', test: (pw) => /[0-9]/.test(pw) },
+  { label: '특수문자 포함', test: (pw) => /[!@#$%^&*]/.test(pw) },
+];
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -14,14 +25,28 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [usernameStatus, setUsernameStatus] = useState(null); // null | 'available' | 'taken' | 'checking'
+
+  const handleCheckUsername = async () => {
+    if (!username.trim()) return;
+    setUsernameStatus('checking');
+    const available = await checkUsernameAvailable(username.trim());
+    setUsernameStatus(available ? 'available' : 'taken');
+  };
+
+  const allRulesPass = PASSWORD_RULES.every((r) => r.test(password));
 
   const handleRegister = async () => {
     if (!username || !email || !password) {
       setError('모든 항목을 입력해주세요.');
       return;
     }
-    if (password.length < 6) {
-      setError('비밀번호는 6자 이상이어야 합니다.');
+    if (usernameStatus !== 'available') {
+      setError('닉네임 중복확인을 완료해주세요.');
+      return;
+    }
+    if (!allRulesPass) {
+      setError('비밀번호 규칙을 모두 충족해주세요.');
       return;
     }
     setLoading(true);
@@ -54,7 +79,7 @@ const RegisterPage = () => {
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'background.default' }}>
-      <Card elevation={4} sx={{ width: '100%', maxWidth: 400, p: 2 }}>
+      <Card elevation={4} sx={{ width: '100%', maxWidth: 440, p: 2 }}>
         <CardContent>
           <Typography variant="h5" sx={{ mb: 3, fontWeight: 700, textAlign: 'center' }}>
             회원가입
@@ -63,13 +88,31 @@ const RegisterPage = () => {
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <TextField
-              fullWidth
-              label="닉네임"
-              variant="outlined"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+            {/* 닉네임 + 중복확인 */}
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <TextField
+                fullWidth
+                label="닉네임"
+                variant="outlined"
+                value={username}
+                onChange={(e) => { setUsername(e.target.value); setUsernameStatus(null); }}
+              />
+              <Button
+                variant="outlined"
+                sx={{ whiteSpace: 'nowrap', minWidth: 90 }}
+                onClick={handleCheckUsername}
+                disabled={!username.trim() || usernameStatus === 'checking'}
+              >
+                중복확인
+              </Button>
+            </Box>
+            {usernameStatus === 'available' && (
+              <Alert severity="success" sx={{ py: 0.5 }}>사용 가능한 닉네임입니다.</Alert>
+            )}
+            {usernameStatus === 'taken' && (
+              <Alert severity="error" sx={{ py: 0.5 }}>이미 사용 중인 닉네임입니다.</Alert>
+            )}
+
             <TextField
               fullWidth
               label="이메일"
@@ -78,15 +121,46 @@ const RegisterPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+
+            {/* 비밀번호 + 규칙 */}
             <TextField
               fullWidth
-              label="비밀번호 (6자 이상)"
+              label="비밀번호"
               type="password"
               variant="outlined"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button fullWidth variant="contained" size="large" onClick={handleRegister} disabled={loading}>
+            <Box>
+              <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: 'block' }}>
+                비밀번호 규칙
+              </Typography>
+              <Stack direction="row" flexWrap="wrap" gap={0.5}>
+                {PASSWORD_RULES.map((rule) => {
+                  const pass = password.length > 0 && rule.test(password);
+                  const inactive = password.length === 0;
+                  return (
+                    <Chip
+                      key={rule.label}
+                      label={rule.label}
+                      size="small"
+                      icon={inactive ? undefined : pass ? <CheckCircleIcon /> : <CancelIcon />}
+                      color={inactive ? 'default' : pass ? 'success' : 'error'}
+                      variant={inactive ? 'outlined' : 'filled'}
+                      sx={{ opacity: inactive ? 0.5 : 1 }}
+                    />
+                  );
+                })}
+              </Stack>
+            </Box>
+
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              onClick={handleRegister}
+              disabled={loading}
+            >
               {loading ? '처리 중...' : '회원가입'}
             </Button>
             <Typography variant="body2" sx={{ textAlign: 'center' }}>

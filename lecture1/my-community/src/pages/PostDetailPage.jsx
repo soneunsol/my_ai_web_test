@@ -3,11 +3,17 @@ import {
   Typography, Box, Card, CardContent, Divider,
   TextField, Button, CircularProgress, Alert, IconButton, Chip,
 } from '@mui/material';
-import { Delete as DeleteIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
+import {
+  Delete as DeleteIcon,
+  ArrowBack as ArrowBackIcon,
+  Favorite as FavoriteIcon,
+  FavoriteBorder as FavoriteBorderIcon,
+} from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
-import { getPost, deletePost } from '../services/postService';
+import { getPost, deletePost, incrementViews } from '../services/postService';
 import { getComments, createComment, deleteComment } from '../services/commentService';
+import { getLikes, addLike, removeLike } from '../services/likeService';
 import useAuth from '../hooks/useAuth';
 
 const PostDetailPage = () => {
@@ -16,20 +22,42 @@ const PostDetailPage = () => {
   const { user } = useAuth();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
 
   useEffect(() => {
-    Promise.all([getPost(id), getComments(id)])
-      .then(([postData, commentsData]) => {
+    Promise.all([getPost(id), getComments(id), getLikes(id)])
+      .then(([postData, commentsData, likesData]) => {
         setPost(postData);
         setComments(commentsData);
+        setLikes(likesData);
+        incrementViews(id);
       })
       .catch(() => setError('게시글을 불러오지 못했습니다.'))
       .finally(() => setLoading(false));
   }, [id]);
+
+  const isLiked = user ? likes.some((l) => l.user_id === user.id) : false;
+
+  const handleToggleLike = async () => {
+    if (!user) { navigate('/login'); return; }
+    setLikeLoading(true);
+    try {
+      if (isLiked) {
+        await removeLike(id, user.id);
+        setLikes((prev) => prev.filter((l) => l.user_id !== user.id));
+      } else {
+        await addLike(id, user.id);
+        setLikes((prev) => [...prev, { user_id: user.id }]);
+      }
+    } finally {
+      setLikeLoading(false);
+    }
+  };
 
   const handleDeletePost = async () => {
     if (!window.confirm('게시글을 삭제하시겠습니까?')) return;
@@ -77,16 +105,50 @@ const PostDetailPage = () => {
               </IconButton>
             )}
           </Box>
-          <Box sx={{ display: 'flex', gap: 1, mt: 1, mb: 2 }}>
+          <Box sx={{ display: 'flex', gap: 1, mt: 1, mb: 2, alignItems: 'center' }}>
             <Chip label={post.profiles?.username || '알 수 없음'} size="small" />
             <Typography variant="caption" color="text.secondary" sx={{ alignSelf: 'center' }}>
               {new Date(post.created_at).toLocaleString('ko-KR')}
             </Typography>
           </Box>
+
+          {post.hashtags?.length > 0 && (
+            <Box sx={{ display: 'flex', gap: 0.5, mb: 2, flexWrap: 'wrap' }}>
+              {post.hashtags.map((tag) => (
+                <Chip key={tag} label={`#${tag}`} size="small" variant="outlined" color="primary" />
+              ))}
+            </Box>
+          )}
+
           <Divider sx={{ mb: 2 }} />
+
+          {post.image_url && (
+            <Box sx={{ mb: 2 }}>
+              <img
+                src={post.image_url}
+                alt="게시글 이미지"
+                style={{ width: '100%', maxWidth: 600, borderRadius: 8, display: 'block' }}
+              />
+            </Box>
+          )}
+
           <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
             {post.content}
           </Typography>
+
+          {/* 좋아요 버튼 */}
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 3, gap: 1 }}>
+            <IconButton
+              onClick={handleToggleLike}
+              disabled={likeLoading}
+              color={isLiked ? 'error' : 'default'}
+            >
+              {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+            <Typography variant="body2" color="text.secondary">
+              {likes.length}
+            </Typography>
+          </Box>
         </CardContent>
       </Card>
 

@@ -25,3 +25,12 @@ export const getSession = async () => {
   const { data: { session } } = await supabase.auth.getSession();
   return session;
 };
+
+export const checkUsernameAvailable = async (username) => {
+  const { data } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('username', username)
+    .maybeSingle();
+  return !data; // true면 사용 가능
+};
