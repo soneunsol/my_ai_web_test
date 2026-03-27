@@ -8,16 +8,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import TagIcon from '@mui/icons-material/Tag';
-import { createPost } from '../services/postService';
+import { createPost, getRandomFoodImage } from '../services/postService';
 import { useAuth } from '../store/AuthContext.jsx';
-
-const FOOD_KEYWORDS = ['burger', 'pizza', 'sushi', 'ramen', 'pasta', 'tacos', 'steak', 'salad', 'curry', 'bbq', 'sandwich', 'noodles'];
-
-const getRandomFoodImage = () => {
-  const keyword = FOOD_KEYWORDS[Math.floor(Math.random() * FOOD_KEYWORDS.length)];
-  const seed = Math.floor(Math.random() * 9999);
-  return `https://source.unsplash.com/400x400/?${keyword}&sig=${seed}`;
-};
 
 const CreatePostPage = () => {
   const navigate = useNavigate();
