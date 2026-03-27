@@ -22,8 +22,15 @@ const LoginPage = () => {
     try {
       await signIn(email, password);
       navigate('/');
-    } catch {
-      setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+    } catch (err) {
+      const msg = err?.message || '';
+      if (msg.includes('Email not confirmed')) {
+        setError('이메일 인증이 필요합니다. 가입 시 받은 이메일의 인증 링크를 클릭해주세요.');
+      } else if (msg.includes('Invalid login credentials')) {
+        setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+      } else {
+        setError(`로그인 실패: ${msg}`);
+      }
     } finally {
       setLoading(false);
     }
