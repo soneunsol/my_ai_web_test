@@ -64,6 +64,12 @@ jobs:
           cp -r lecture1/my-community/dist/. combined-dist/my-community/
           mkdir -p combined-dist/mini_sns
           cp -r lecture1/mini_sns/dist/. combined-dist/mini_sns/
+          echo "=== combined-dist 구조 확인 ==="
+          ls -la combined-dist/
+          echo "=== combined-dist/index.html 내용 ==="
+          cat combined-dist/index.html
+          echo "=== combined-dist/mini_sns/ 구조 ==="
+          ls -la combined-dist/mini_sns/
 
       - name: Pages 설정
         uses: actions/configure-pages@v4
