@@ -6,7 +6,7 @@ import BottomNav from './BottomNav.jsx';
 
 const MainLayout = () => {
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <NavBar />
       <Box
         component="main"
