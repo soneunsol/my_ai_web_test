@@ -6,16 +6,18 @@ import BottomNav from './BottomNav.jsx';
 
 const MainLayout = () => {
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <NavBar />
       <Box
         component="main"
         sx={{
-          pt: '56px',  // NavBar 높이
-          pb: '68px',  // BottomNav 높이
+          pt: '56px',
+          pb: '68px',
           minHeight: '100vh',
-          width: '100%',
-          maxWidth: 480,
+          maxWidth: '480px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          overflow: 'hidden',
         }}
       >
         <Outlet />
