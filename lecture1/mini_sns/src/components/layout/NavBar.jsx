@@ -9,21 +9,22 @@ const NavBar = () => {
 
   return (
     <AppBar
-      position="fixed"
+      position="sticky"
       elevation={0}
       sx={{
         background: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(10px)',
         borderBottom: '1px solid rgba(255,107,53,0.15)',
-        maxWidth: 480,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '100%',
+        top: 0,
+        zIndex: 100,
       }}
     >
       <Toolbar sx={{ justifyContent: 'space-between', minHeight: 56 }}>
         {/* 로고 */}
-        <Box onClick={() => navigate('/')} sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}>
+        <Box
+          onClick={() => navigate('/')}
+          sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}
+        >
           <Box
             sx={{
               width: 32,

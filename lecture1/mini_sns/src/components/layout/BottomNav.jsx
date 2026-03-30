@@ -28,16 +28,14 @@ const BottomNav = () => {
     <Paper
       elevation={0}
       sx={{
-        position: 'fixed',
+        position: 'sticky',
         bottom: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
         width: '100%',
-        maxWidth: 480,
         borderTop: '1px solid rgba(255,107,53,0.15)',
         bgcolor: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(10px)',
-        zIndex: 1000,
+        zIndex: 100,
+        mt: 'auto',
       }}
     >
       <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
@@ -56,7 +54,7 @@ const BottomNav = () => {
             sx={{ color: path === '/gathering' ? '#FF6B35' : '#aaa', minWidth: 60 }}
           />
 
-          {/* 가운데 게시물 작성 버튼 */}
+          {/* 가운데 게시물 작성 버튼 자리 */}
           <BottomNavigationAction
             icon={<Box sx={{ width: 48, height: 48 }} />}
             sx={{ minWidth: 60, pointerEvents: 'none' }}
