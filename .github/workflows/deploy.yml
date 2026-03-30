@@ -45,10 +45,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Prepare deploy folder
+        run: |
+          mkdir -p _deploy/mini_sns
+          cp -r dist/* _deploy/mini_sns/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: lecture1/mini_sns/dist
+          path: lecture1/mini_sns/_deploy
 
   deploy:
     environment:

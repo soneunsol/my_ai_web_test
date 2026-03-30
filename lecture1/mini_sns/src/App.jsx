@@ -30,7 +30,7 @@ const ProtectedRoute = ({ children }) => {
 
 const App = () => {
   return (
-    <BrowserRouter basename="/my_ai_web_test">
+    <BrowserRouter basename="/my_ai_web_test/mini_sns">
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
