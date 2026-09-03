@@ -1,52 +1,52 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './store/AuthContext.jsx';
-import { Box, CircularProgress } from '@mui/material';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
+import AuthProvider from './components/common/auth-provider';
+import RequireAuth from './components/common/require-auth';
+import ChatListPage from './pages/chat-list-page';
+import ChatRoomPage from './pages/chat-room-page';
+import CreatePostPage from './pages/create-post-page';
+import HomePage from './pages/home-page';
+import LoginPage from './pages/login-page';
+import MeetupPage from './pages/meetup-page';
+import MyPage from './pages/my-page';
+import NotificationPage from './pages/notification-page';
+import PostDetailPage from './pages/post-detail-page';
+import SignupPage from './pages/signup-page';
 
-import LoginPage from './pages/LoginPage.jsx';
-import SignUpPage from './pages/SignUpPage.jsx';
-import MainLayout from './components/layout/MainLayout.jsx';
-import HomePage from './pages/HomePage.jsx';
-import CreatePostPage from './pages/CreatePostPage.jsx';
-import MyPage from './pages/MyPage.jsx';
-import NotificationsPage from './pages/NotificationsPage.jsx';
-import GatheringPage from './pages/GatheringPage.jsx';
-import ChatPage from './pages/ChatPage.jsx';
-import ChatRoomPage from './pages/ChatRoomPage.jsx';
+/** 로그인이 필요한 페이지 목록 */
+const PRIVATE_ROUTES = [
+  { path: '/', element: <HomePage /> },
+  { path: '/post/:postId', element: <PostDetailPage /> },
+  { path: '/create', element: <CreatePostPage /> },
+  { path: '/profile', element: <MyPage /> },
+  { path: '/meetup', element: <MeetupPage /> },
+  { path: '/chat', element: <ChatListPage /> },
+  { path: '/chat/:roomId', element: <ChatRoomPage /> },
+  { path: '/notifications', element: <NotificationPage /> },
+];
 
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress color="primary" />
-      </Box>
-    );
-  }
-
-  return user ? children : <Navigate to="/login" replace />;
-};
-
-const App = () => {
+/**
+ * App — 맛스타그램 라우팅 진입점
+ *
+ * Example usage:
+ * <App />
+ */
+function App() {
   return (
-    <BrowserRouter basename="/ai-vibe-coding/mini_sns">
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="create" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
-          <Route path="mypage" element={<ProtectedRoute><MyPage /></ProtectedRoute>} />
-          <Route path="notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
-          <Route path="gathering" element={<ProtectedRoute><GatheringPage /></ProtectedRoute>} />
-          <Route path="chat" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
-          <Route path="chat/:roomId" element={<ProtectedRoute><ChatRoomPage /></ProtectedRoute>} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <HashRouter>
+        <Routes>
+          <Route path="/login" element={ <LoginPage /> } />
+          <Route path="/signup" element={ <SignupPage /> } />
+
+          { PRIVATE_ROUTES.map(({ path, element }) => (
+            <Route key={ path } path={ path } element={ <RequireAuth>{ element }</RequireAuth> } />
+          )) }
+
+          <Route path="*" element={ <Navigate to="/" replace /> } />
+        </Routes>
+      </HashRouter>
+    </AuthProvider>
   );
-};
+}
 
 export default App;

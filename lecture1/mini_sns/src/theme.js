@@ -1,44 +1,51 @@
 import { createTheme } from '@mui/material/styles';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 
+/** 맛스타그램 디자인 시스템 — 오렌지 메인 / 연한 오렌지 보조 */
 const theme = createTheme({
   palette: {
     primary: {
       main: '#FF6B35',
-      light: '#FF8C5A',
-      dark: '#E55A28',
-      contrastText: '#ffffff',
+      light: '#FF9A6C',
+      dark: '#E24E1B',
+      contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#FFB347',
-      light: '#FFC87A',
-      dark: '#E8A030',
+      main: '#FFD8A8',
+      light: '#FFF4E6',
+      dark: '#FFB566',
+      contrastText: '#5A3A22',
     },
     background: {
-      default: '#FFF8F5',
-      paper: '#ffffff',
+      default: '#FFFBF7',
+      paper: '#FFFFFF',
     },
+    text: {
+      primary: '#2B2118',
+      secondary: '#8A7A6D',
+    },
+    divider: '#F0E4DA',
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    h1: { fontSize: '2.125rem', fontWeight: 500 },
-    h2: { fontSize: '1.5rem', fontWeight: 500 },
-    h3: { fontSize: '1.25rem', fontWeight: 500 },
-    body1: { fontSize: '1rem', fontWeight: 400 },
-    body2: { fontSize: '0.875rem', fontWeight: 400 },
+    fontFamily:
+      '"Pretendard", "Apple SD Gothic Neo", "Roboto", "Helvetica", "Arial", sans-serif',
+    h1: { fontSize: '2.125rem', fontWeight: 700 },
+    h6: { fontWeight: 700 },
+    button: { textTransform: 'none', fontWeight: 600 },
+  },
+  shape: {
+    borderRadius: 14,
   },
   spacing: 8,
   components: {
     MuiButton: {
       styleOverrides: {
-        root: { borderRadius: 8, textTransform: 'none', fontWeight: 600 },
+        root: { borderRadius: 12, boxShadow: 'none' },
       },
     },
-    MuiTextField: {
-      defaultProps: { variant: 'outlined' },
+    MuiPaper: {
+      styleOverrides: {
+        root: { backgroundImage: 'none' },
+      },
     },
   },
 });

@@ -43,9 +43,8 @@ jobs:
 
       - name: my-community 빌드
         working-directory: lecture1/my-community
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        # Supabase 연결 정보는 lecture1/my-community/.env.production 을 사용합니다
+        # (여기서 secrets 를 주입하면 .env.production 보다 우선해 덮어씁니다)
         run: npm run build
 
       - name: mini_sns 의존성 설치
@@ -54,9 +53,8 @@ jobs:
 
       - name: mini_sns 빌드
         working-directory: lecture1/mini_sns
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        # Supabase 연결 정보는 lecture1/mini_sns/.env.production 을 사용합니다
+        # (여기서 secrets 를 주입하면 .env.production 보다 우선해 덮어씁니다)
         run: npm run build
 
       - name: 배포 디렉토리 합치기

@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
+/** GitHub Pages 배포 경로(/ai-vibe-coding/my-community/) 기준 설정 */
 export default defineConfig({
-  plugins: [react()],
   base: '/ai-vibe-coding/my-community/',
-})
+  plugins: [react()],
+});
